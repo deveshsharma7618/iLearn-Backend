@@ -31,10 +31,22 @@ IMAGE_FOLDER = os.path.join(UPLOAD_FOLDER, 'images')
 VIDEO_FOLDER = os.path.join(UPLOAD_FOLDER, 'videos')
 RESOURCE_FOLDER = os.path.join(UPLOAD_FOLDER, 'resources')
 
-# Create upload folders if they don't exist
-os.makedirs(IMAGE_FOLDER, exist_ok=True)
-os.makedirs(VIDEO_FOLDER, exist_ok=True)
-os.makedirs(RESOURCE_FOLDER, exist_ok=True)
+# Create upload folders if they don't exist (use /tmp on read-only filesystems)
+try:
+    os.makedirs(IMAGE_FOLDER, exist_ok=True)
+    os.makedirs(VIDEO_FOLDER, exist_ok=True)
+    os.makedirs(RESOURCE_FOLDER, exist_ok=True)
+except OSError as e:
+    if e.errno == 30:  # Read-only file system
+        UPLOAD_FOLDER = '/tmp/uploads'
+        IMAGE_FOLDER = os.path.join(UPLOAD_FOLDER, 'images')
+        VIDEO_FOLDER = os.path.join(UPLOAD_FOLDER, 'videos')
+        RESOURCE_FOLDER = os.path.join(UPLOAD_FOLDER, 'resources')
+        os.makedirs(IMAGE_FOLDER, exist_ok=True)
+        os.makedirs(VIDEO_FOLDER, exist_ok=True)
+        os.makedirs(RESOURCE_FOLDER, exist_ok=True)
+    else:
+        raise
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB max
