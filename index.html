@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iLearn - Online Learning Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 30px;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .nav-links a:hover {
+            opacity: 0.8;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-section {
+            padding: 40px 20px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            max-width: 800px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .search-bar input,
+        .search-bar select {
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .search-bar input {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .search-bar select {
+            min-width: 150px;
+        }
+
+        .search-bar button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .search-bar button:hover {
+            transform: translateY(-2px);
+        }
+
+        .courses-section {
+            padding: 60px 20px;
+        }
+
+        .section-title {
+            font-size: 32px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .course-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .course-thumbnail {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 48px;
+        }
+
+        .course-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .course-content {
+            padding: 20px;
+        }
+
+        .course-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .course-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .course-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .course-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .course-level {
+            background: #f0f0f0;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .course-rating {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .stars {
+            color: #ffd700;
+        }
+
+        .rating-text {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .course-footer {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #f0f0f0;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            font-size: 18px;
+            color: #666;
+        }
+
+        .no-courses {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .no-courses h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 30px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close-btn {
+            font-size: 30px;
+            cursor: pointer;
+            color: #999;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .search-bar input,
+            .search-bar select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">🎓 iLearn</div>
+            <div class="nav-links">
+                <a href="index.html">Courses</a>
+                <a href="admin.html">Admin</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Learn Without Limits</h1>
+            <p>Discover thousands of courses to boost your career and expand your knowledge</p>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="container">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search courses...">
+                <select id="categoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="Programming">Programming</option>
+                    <option value="Web Development">Web Development</option>
+                    <option value="Mobile Development">Mobile Development</option>
+                    <option value="Data Science">Data Science</option>
+                    <option value="Design">Design</option>
+                    <option value="Business">Business</option>
+                </select>
+                <select id="levelFilter">
+                    <option value="">All Levels</option>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                </select>
+                <button onclick="loadCourses()">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section class="courses-section">
+        <div class="container">
+            <h2 class="section-title">Available Courses</h2>
+            <div id="coursesContainer" class="courses-grid">
+                <div class="loading">Loading courses...</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Course Detail Modal -->
+    <div id="courseModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Course Details</h2>
+                <span class="close-btn" onclick="closeModal()">&times;</span>
+            </div>
+            <div id="modalBody">
+                <!-- Course details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 iLearn. All rights reserved.</p>
+            <p style="margin-top: 10px; opacity: 0.8;">Empowering learners worldwide</p>
+        </div>
+    </footer>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000/api';
+
+        // Load courses on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCourses();
+        });
+
+        async function loadCourses() {
+            const container = document.getElementById('coursesContainer');
+            container.innerHTML = '<div class="loading">Loading courses...</div>';
+
+            try {
+                const search = document.getElementById('searchInput').value;
+                const category = document.getElementById('categoryFilter').value;
+                const level = document.getElementById('levelFilter').value;
+
+                let url = `${API_BASE_URL}/courses?`;
+                if (search) url += `search=${encodeURIComponent(search)}&`;
+                if (category) url += `category=${encodeURIComponent(category)}&`;
+                if (level) url += `level=${encodeURIComponent(level)}&`;
+
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (response.ok && data.courses.length > 0) {
+                    displayCourses(data.courses);
+                } else {
+                    container.innerHTML = `
+                        <div class="no-courses">
+                            <h3>No courses found</h3>
+                            <p>Try adjusting your search filters</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                container.innerHTML = `
+                    <div class="no-courses">
+                        <h3>Error loading courses</h3>
+                        <p>Please make sure the server is running</p>
+                    </div>
+                `;
+                console.error('Error loading courses:', error);
+            }
+        }
+
+        function displayCourses(courses) {
+            const container = document.getElementById('coursesContainer');
+            container.innerHTML = courses.map(course => `
+                <div class="course-card" onclick="showCourseDetails('${course._id}')">
+                    <div class="course-thumbnail">
+                        ${course.thumbnail ? 
+                            `<img src="${course.thumbnail}" alt="${course.name}">` : 
+                            '📚'
+                        }
+                    </div>
+                    <div class="course-content">
+                        <div class="course-title">${course.name}</div>
+                        <div class="course-description">${course.description}</div>
+                        <div class="course-rating">
+                            <span class="stars">${getStars(course.ratings.average)}</span>
+                            <span class="rating-text">
+                                ${course.ratings.average.toFixed(1)} 
+                                (${course.ratings.count} reviews)
+                            </span>
+                        </div>
+                        <div class="course-meta">
+                            <div class="course-price">₹${course.price}</div>
+                            <div class="course-level">${course.level}</div>
+                        </div>
+                        <div class="course-footer">
+                            <button class="btn btn-primary" onclick="enrollCourse(event, '${course._id}')">
+                                Enroll Now
+                            </button>
+                            <button class="btn btn-secondary" onclick="showCourseDetails('${course._id}'); event.stopPropagation()">
+                                View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getStars(rating) {
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 >= 0.5;
+            let stars = '★'.repeat(fullStars);
+            if (halfStar) stars += '☆';
+            stars += '☆'.repeat(5 - Math.ceil(rating));
+            return stars;
+        }
+
+        async function showCourseDetails(courseId) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/courses/${courseId}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    const course = data.course;
+                    document.getElementById('modalTitle').textContent = course.name;
+                    document.getElementById('modalBody').innerHTML = `
+                        ${course.video_url ? `
+                            <div style="margin-bottom: 20px;">
+                                <video controls style="width: 100%; border-radius: 10px;">
+                                    <source src="${course.video_url}" type="video/mp4">
+                                </video>
+                            </div>
+                        ` : ''}
+                        
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="margin-bottom: 10px;">Description</h3>
+                            <p>${course.description}</p>
+                        </div>
+
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 20px;">
+                            <div>
+                                <strong>Price:</strong> ₹${course.price}
+                            </div>
+                            <div>
+                                <strong>Duration:</strong> ${course.duration || 'Self-paced'}
+                            </div>
+                            <div>
+                                <strong>Level:</strong> ${course.level}
+                            </div>
+                            <div>
+                                <strong>Category:</strong> ${course.category}
+                            </div>
+                            <div>
+                                <strong>Batch:</strong> ${course.batch || 'Anytime'}
+                            </div>
+                            <div>
+                                <strong>Enrolled:</strong> ${course.enrolled_students} students
+                            </div>
+                        </div>
+
+                        ${course.teachers && course.teachers.length > 0 ? `
+                            <div style="margin-bottom: 20px;">
+                                <h3 style="margin-bottom: 10px;">Instructors</h3>
+                                ${course.teachers.map(teacher => `
+                                    <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                                        <strong>${teacher.name}</strong><br>
+                                        <small>${teacher.qualification}</small><br>
+                                        <small>${teacher.experience}</small>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+
+                        ${course.syllabus && course.syllabus.length > 0 ? `
+                            <div style="margin-bottom: 20px;">
+                                <h3 style="margin-bottom: 10px;">Syllabus</h3>
+                                <ul style="padding-left: 20px;">
+                                    ${course.syllabus.map(topic => `<li style="margin-bottom: 5px;">${topic}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+
+                        ${course.learning_outcomes && course.learning_outcomes.length > 0 ? `
+                            <div style="margin-bottom: 20px;">
+                                <h3 style="margin-bottom: 10px;">What You'll Learn</h3>
+                                <ul style="padding-left: 20px;">
+                                    ${course.learning_outcomes.map(outcome => `<li style="margin-bottom: 5px;">${outcome}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+
+                        ${course.prerequisites && course.prerequisites.length > 0 ? `
+                            <div style="margin-bottom: 20px;">
+                                <h3 style="margin-bottom: 10px;">Prerequisites</h3>
+                                <ul style="padding-left: 20px;">
+                                    ${course.prerequisites.map(prereq => `<li style="margin-bottom: 5px;">${prereq}</li>`).join('')}
+                                </ul>
+                            </div>
+                        ` : ''}
+
+                        ${course.reviews && course.reviews.length > 0 ? `
+                            <div style="margin-bottom: 20px;">
+                                <h3 style="margin-bottom: 10px;">Reviews (${course.reviews.length})</h3>
+                                ${course.reviews.slice(0, 5).map(review => `
+                                    <div style="background: #f5f5f5; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                            <strong>${review.user_name}</strong>
+                                            <span style="color: #ffd700;">${getStars(review.rating)}</span>
+                                        </div>
+                                        <p style="color: #666; font-size: 14px;">${review.comment}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+
+                        <button class="btn btn-primary" onclick="enrollCourse(event, '${course._id}')" style="width: 100%; padding: 15px; font-size: 16px;">
+                            Enroll Now - ₹${course.price}
+                        </button>
+                    `;
+                    document.getElementById('courseModal').classList.add('show');
+                }
+            } catch (error) {
+                console.error('Error loading course details:', error);
+                alert('Error loading course details');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('courseModal').classList.remove('show');
+        }
+
+        function enrollCourse(event, courseId) {
+            event.stopPropagation();
+            alert('Please login to enroll in this course.\n\nNote: Student login functionality can be added separately.');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('courseModal').addEventListener('click', (e) => {
+            if (e.target.id === 'courseModal') {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

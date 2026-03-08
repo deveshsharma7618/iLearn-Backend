@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iLearn Admin Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            max-width: 800px;
+            width: 100%;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .form-section {
+            display: none;
+        }
+
+        .form-section.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 14px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            margin-top: 10px;
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 10px 20px rgba(108, 117, 125, 0.3);
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .user-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-info .welcome {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .user-info .email {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .array-input-group {
+            margin-bottom: 15px;
+        }
+
+        .array-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .array-item input {
+            flex: 1;
+        }
+
+        .btn-small {
+            padding: 8px 15px;
+            font-size: 14px;
+            width: auto;
+        }
+
+        .btn-add {
+            background: #28a745;
+            margin-top: 5px;
+        }
+
+        .btn-remove {
+            background: #dc3545;
+        }
+
+        .teacher-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .teacher-item .btn-remove {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-card .number {
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .label {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 iLearn Admin Dashboard</h1>
+            <p>Manage courses and monitor your learning platform</p>
+        </div>
+
+        <div class="content">
+            <!-- Alert Messages -->
+            <div id="alert" class="alert"></div>
+
+            <!-- Login Section -->
+            <div id="loginSection" class="form-section active">
+                <h2 style="margin-bottom: 20px; color: #333;">Admin Login</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email Address</label>
+                        <input type="email" id="loginEmail" placeholder="admin@ilearn.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" id="loginBtn">
+                        <span class="btn-text">Login</span>
+                    </button>
+                </form>
+                <div style="text-align: center; margin-top: 20px; color: #666; font-size: 14px;">
+                    Don't have an account? 
+                    <a href="#" id="showRegisterLink" style="color: #667eea; text-decoration: none; font-weight: 600;">Register here</a>
+                </div>
+            </div>
+
+            <!-- Register Section -->
+            <div id="registerSection" class="form-section">
+                <h2 style="margin-bottom: 20px; color: #333;">Admin Registration</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label for="registerName">Full Name</label>
+                        <input type="text" id="registerName" placeholder="Enter your name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email Address</label>
+                        <input type="email" id="registerEmail" placeholder="admin@ilearn.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password</label>
+                        <input type="password" id="registerPassword" placeholder="Create a password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPhone">Phone (Optional)</label>
+                        <input type="tel" id="registerPhone" placeholder="+1234567890">
+                    </div>
+                    <button type="submit" id="registerBtn">
+                        <span class="btn-text">Register as Admin</span>
+                    </button>
+                </form>
+                <div style="text-align: center; margin-top: 20px; color: #666; font-size: 14px;">
+                    Already have an account? 
+                    <a href="#" id="showLoginLink" style="color: #667eea; text-decoration: none; font-weight: 600;">Login here</a>
+                </div>
+            </div>
+
+            <!-- Dashboard Section -->
+            <div id="dashboardSection" class="form-section">
+                <div class="user-info">
+                    <div>
+                        <div class="welcome">Welcome, <span id="userName">Admin</span>! 👋</div>
+                        <div class="email" id="userEmail"></div>
+                    </div>
+                    <button class="btn-secondary btn-small" id="logoutBtn">Logout</button>
+                </div>
+
+                <!-- Statistics -->
+                <div id="statsContainer" class="stats-grid">
+                    <!-- Stats will be loaded here -->
+                </div>
+
+                <h2 style="margin-bottom: 20px; color: #333;">Create New Course</h2>
+                <form id="courseForm">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="courseName">Course Name *</label>
+                            <input type="text" id="courseName" placeholder="e.g., Python Programming" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="coursePrice">Price (₹) *</label>
+                            <input type="number" id="coursePrice" placeholder="2999" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="courseDescription">Description *</label>
+                        <textarea id="courseDescription" placeholder="Detailed course description..." required></textarea>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="courseDuration">Duration</label>
+                            <input type="text" id="courseDuration" placeholder="e.g., 8 weeks">
+                        </div>
+                        <div class="form-group">
+                            <label for="courseLevel">Level *</label>
+                            <select id="courseLevel" required>
+                                <option value="">Select Level</option>
+                                <option value="Beginner">Beginner</option>
+                                <option value="Intermediate">Intermediate</option>
+                                <option value="Advanced">Advanced</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="courseCategory">Category *</label>
+                            <input type="text" id="courseCategory" placeholder="e.g., Programming" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="courseBatch">Batch</label>
+                            <input type="text" id="courseBatch" placeholder="e.g., Batch-2024-01">
+                        </div>
+                    </div>
+
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="courseThumbnail">Thumbnail Image</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="file" id="courseThumbnail" accept="image/*" style="flex: 1;">
+                                <button type="button" class="btn-primary btn-small" id="uploadThumbnailBtn" style="background: #28a745;">Upload</button>
+                            </div>
+                            <small style="color: #666; margin-top: 5px;">Max 5MB. Supported: JPG, PNG, GIF, WebP</small>
+                            <div id="thumbnailPreview" style="margin-top: 10px;"></div>
+                        </div>
+                        <div class="form-group">
+                            <label for="courseVideo">Intro Video</label>
+                            <div style="display: flex; gap: 10px;">
+                                <input type="file" id="courseVideo" accept="video/*" style="flex: 1;">
+                                <button type="button" class="btn-primary btn-small" id="uploadVideoBtn" style="background: #28a745;">Upload</button>
+                            </div>
+                            <small style="color: #666; margin-top: 5px;">Max 100MB. Supported: MP4, WebM, Ogg, MOV</small>
+                            <div id="videoPreview" style="margin-top: 10px;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Teachers -->
+                    <div class="form-group">
+                        <label>Teachers</label>
+                        <div id="teachersContainer"></div>
+                        <button type="button" class="btn-add btn-small" id="addTeacherBtn">+ Add Teacher</button>
+                    </div>
+
+                    <!-- Syllabus -->
+                    <div class="form-group">
+                        <label>Syllabus Topics</label>
+                        <div id="syllabusContainer"></div>
+                        <button type="button" class="btn-add btn-small" id="addSyllabusBtn">+ Add Topic</button>
+                    </div>
+
+                    <!-- Prerequisites -->
+                    <div class="form-group">
+                        <label>Prerequisites</label>
+                        <div id="prerequisitesContainer"></div>
+                        <button type="button" class="btn-add btn-small" id="addPrerequisiteBtn">+ Add Prerequisite</button>
+                    </div>
+
+                    <!-- Learning Outcomes -->
+                    <div class="form-group">
+                        <label>Learning Outcomes</label>
+                        <div id="outcomesContainer"></div>
+                        <button type="button" class="btn-add btn-small" id="addOutcomeBtn">+ Add Outcome</button>
+                    </div>
+
+                    <button type="submit" id="courseSubmitBtn">
+                        <span class="btn-text">Create Course</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        const API_BASE_URL = 'http://localhost:5000/api';
+        let authToken = localStorage.getItem('adminToken');
+        let currentUser = JSON.parse(localStorage.getItem('adminUser') || 'null');
+        
+        // File storage for uploaded media
+        let uploadedThumbnail = '';
+        let uploadedVideo = '';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            if (authToken && currentUser) {
+                showDashboard();
+                loadStats();
+            } else {
+                showLogin();
+            }
+            setupEventListeners();
+        });
+
+        // Event Listeners
+        function setupEventListeners() {
+            document.getElementById('loginForm').addEventListener('submit', handleLogin);
+            document.getElementById('registerForm').addEventListener('submit', handleRegister);
+            document.getElementById('courseForm').addEventListener('submit', handleCourseSubmit);
+            document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+            document.getElementById('showRegisterLink').addEventListener('click', (e) => {
+                e.preventDefault();
+                showRegister();
+            });
+            document.getElementById('showLoginLink').addEventListener('click', (e) => {
+                e.preventDefault();
+                showLogin();
+            });
+
+            // Dynamic array inputs
+            document.getElementById('addTeacherBtn').addEventListener('click', addTeacherField);
+            document.getElementById('addSyllabusBtn').addEventListener('click', () => addArrayField('syllabus'));
+            document.getElementById('addPrerequisiteBtn').addEventListener('click', () => addArrayField('prerequisites'));
+            document.getElementById('addOutcomeBtn').addEventListener('click', () => addArrayField('outcomes'));
+
+            // File upload handlers
+            document.getElementById('uploadThumbnailBtn').addEventListener('click', () => uploadImage('thumbnail'));
+            document.getElementById('uploadVideoBtn').addEventListener('click', () => uploadVideo('video'));
+            
+            // File input preview
+            document.getElementById('courseThumbnail').addEventListener('change', previewThumbnail);
+            document.getElementById('courseVideo').addEventListener('change', previewVideo);
+        }
+
+        // Navigation
+        function showSection(sectionId) {
+            document.querySelectorAll('.form-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+            hideAlert();
+        }
+
+        function showLogin() {
+            showSection('loginSection');
+        }
+
+        function showRegister() {
+            showSection('registerSection');
+        }
+
+        function showDashboard() {
+            showSection('dashboardSection');
+            if (currentUser) {
+                document.getElementById('userName').textContent = currentUser.name;
+                document.getElementById('userEmail').textContent = currentUser.email;
+            }
+        }
+
+        // Alert Functions
+        function showAlert(message, type = 'info') {
+            const alert = document.getElementById('alert');
+            alert.className = `alert alert-${type} show`;
+            alert.textContent = message;
+            setTimeout(() => hideAlert(), 5000);
+        }
+
+        function hideAlert() {
+            const alert = document.getElementById('alert');
+            alert.classList.remove('show');
+        }
+
+        // API Calls
+        async function handleLogin(e) {
+            e.preventDefault();
+            const btn = document.getElementById('loginBtn');
+            const btnText = btn.querySelector('.btn-text');
+            
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                btnText.innerHTML = '<span class="loading"></span>';
+                btn.disabled = true;
+
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (data.user.role !== 'admin') {
+                        showAlert('Access denied. Admin privileges required.', 'error');
+                        return;
+                    }
+
+                    authToken = data.access_token;
+                    currentUser = data.user;
+                    localStorage.setItem('adminToken', authToken);
+                    localStorage.setItem('adminUser', JSON.stringify(currentUser));
+                    
+                    showAlert('Login successful!', 'success');
+                    setTimeout(() => {
+                        showDashboard();
+                        loadStats();
+                    }, 1000);
+                } else {
+                    showAlert(data.error || 'Login failed', 'error');
+                }
+            } catch (error) {
+                showAlert('Network error. Please check if the server is running.', 'error');
+                console.error('Login error:', error);
+            } finally {
+                btnText.textContent = 'Login';
+                btn.disabled = false;
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            const btn = document.getElementById('registerBtn');
+            const btnText = btn.querySelector('.btn-text');
+            
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            const phone = document.getElementById('registerPhone').value;
+
+            try {
+                btnText.innerHTML = '<span class="loading"></span>';
+                btn.disabled = true;
+
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password, phone, role: 'admin' })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    authToken = data.access_token;
+                    currentUser = data.user;
+                    localStorage.setItem('adminToken', authToken);
+                    localStorage.setItem('adminUser', JSON.stringify(currentUser));
+                    
+                    showAlert('Registration successful!', 'success');
+                    setTimeout(() => {
+                        showDashboard();
+                        loadStats();
+                    }, 1000);
+                } else {
+                    showAlert(data.error || 'Registration failed', 'error');
+                }
+            } catch (error) {
+                showAlert('Network error. Please check if the server is running.', 'error');
+                console.error('Register error:', error);
+            } finally {
+                btnText.textContent = 'Register as Admin';
+                btn.disabled = false;
+            }
+        }
+
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/stats`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    displayStats(data.stats);
+                }
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        function displayStats(stats) {
+            const container = document.getElementById('statsContainer');
+            container.innerHTML = `
+                <div class="stat-card">
+                    <div class="number">${stats.total_students}</div>
+                    <div class="label">Total Students</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">${stats.total_courses}</div>
+                    <div class="label">Total Courses</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">${stats.active_courses}</div>
+                    <div class="label">Active Courses</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number">${stats.total_enrollments}</div>
+                    <div class="label">Enrollments</div>
+                </div>
+            `;
+        }
+
+        // File Upload Functions
+        async function uploadImage(type) {
+            const fileInput = document.getElementById('courseThumbnail');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                showAlert('Please select an image file', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const btn = document.getElementById('uploadThumbnailBtn');
+                const originalText = btn.textContent;
+                btn.innerHTML = '<span class="loading"></span>';
+                btn.disabled = true;
+
+                const response = await fetch(`${API_BASE_URL}/upload/image`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${authToken}` },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    uploadedThumbnail = data.file_url;
+                    showAlert('Image uploaded successfully! File: ' + data.filename, 'success');
+                    document.getElementById('thumbnailPreview').innerHTML = 
+                        `<img src="${uploadedThumbnail}" style="max-width: 100%; height: auto; border-radius: 8px; margin-top: 10px;">
+                        <small style="display: block; margin-top: 5px; color: #666;">Stored: ${data.filename}</small>`;
+                } else {
+                    showAlert(data.error || 'Upload failed', 'error');
+                }
+            } catch (error) {
+                showAlert('Error uploading image: ' + error.message, 'error');
+                console.error('Upload error:', error);
+            } finally {
+                const btn = document.getElementById('uploadThumbnailBtn');
+                btn.textContent = 'Upload';
+                btn.disabled = false;
+            }
+        }
+
+        async function uploadVideo(type) {
+            const fileInput = document.getElementById('courseVideo');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                showAlert('Please select a video file', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const btn = document.getElementById('uploadVideoBtn');
+                const originalText = btn.textContent;
+                btn.innerHTML = '<span class="loading"></span>';
+                btn.disabled = true;
+
+                const response = await fetch(`${API_BASE_URL}/upload/video`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${authToken}` },
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    uploadedVideo = data.file_url;
+                    showAlert('Video uploaded successfully! File: ' + data.filename, 'success');
+                    document.getElementById('videoPreview').innerHTML = 
+                        `<video width="100%" height="200" controls style="border-radius: 8px; margin-top: 10px; background: #000;">
+                            <source src="${uploadedVideo}" type="${getVideoMimeType(file.name)}">
+                            Your browser does not support the video tag.
+                        </video>
+                        <small style="display: block; margin-top: 5px; color: #666;">Stored: ${data.filename}</small>`;
+                } else {
+                    showAlert(data.error || 'Upload failed', 'error');
+                }
+            } catch (error) {
+                showAlert('Error uploading video: ' + error.message, 'error');
+                console.error('Upload error:', error);
+            } finally {
+                const btn = document.getElementById('uploadVideoBtn');
+                btn.textContent = 'Upload';
+                btn.disabled = false;
+            }
+        }
+
+        function previewThumbnail() {
+            const file = document.getElementById('courseThumbnail').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('thumbnailPreview').innerHTML = 
+                        `<img src="${e.target.result}" style="max-width: 100%; height: auto; border-radius: 8px; margin-top: 10px;">
+                        <small style="display: block; margin-top: 5px; color: #666;">File size: ${(file.size / 1024).toFixed(2)} KB</small>`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function previewVideo() {
+            const file = document.getElementById('courseVideo').files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('videoPreview').innerHTML = 
+                        `<video width="100%" height="200" controls style="border-radius: 8px; background: #000;">
+                            <source src="${e.target.result}" type="${file.type}">
+                            Your browser does not support the video tag.
+                        </video>
+                        <small style="display: block; margin-top: 5px; color: #666;">File size: ${(file.size / 1024 / 1024).toFixed(2)} MB</small>`;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function getVideoMimeType(filename) {
+            const ext = filename.split('.').pop().toLowerCase();
+            const mimeTypes = {
+                'mp4': 'video/mp4',
+                'webm': 'video/webm',
+                'ogg': 'video/ogg',
+                'mov': 'video/quicktime'
+            };
+            return mimeTypes[ext] || 'video/mp4';
+        }
+
+        async function handleCourseSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('courseSubmitBtn');
+            const btnText = btn.querySelector('.btn-text');
+
+            // Collect form data
+            const courseData = {
+                name: document.getElementById('courseName').value,
+                description: document.getElementById('courseDescription').value,
+                price: parseInt(document.getElementById('coursePrice').value),
+                duration: document.getElementById('courseDuration').value,
+                level: document.getElementById('courseLevel').value,
+                category: document.getElementById('courseCategory').value,
+                batch: document.getElementById('courseBatch').value,
+                thumbnail: uploadedThumbnail || document.getElementById('courseThumbnail').value,
+                video_url: uploadedVideo || document.getElementById('courseVideo').value,
+                teachers: getTeachers(),
+                syllabus: getArrayValues('syllabus'),
+                prerequisites: getArrayValues('prerequisites'),
+                learning_outcomes: getArrayValues('outcomes')
+            };
+
+            try {
+                btnText.innerHTML = '<span class="loading"></span>';
+                btn.disabled = true;
+
+                const response = await fetch(`${API_BASE_URL}/courses`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify(courseData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showAlert('Course created successfully! 🎉', 'success');
+                    document.getElementById('courseForm').reset();
+                    clearDynamicFields();
+                    loadStats(); // Refresh stats
+                } else {
+                    showAlert(data.error || 'Failed to create course', 'error');
+                }
+            } catch (error) {
+                showAlert('Network error. Please check if the server is running.', 'error');
+                console.error('Course creation error:', error);
+            } finally {
+                btnText.textContent = 'Create Course';
+                btn.disabled = false;
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            authToken = null;
+            currentUser = null;
+            showLogin();
+            showAlert('Logged out successfully', 'info');
+        }
+
+        // Dynamic Field Management
+        function addTeacherField() {
+            const container = document.getElementById('teachersContainer');
+            const teacherDiv = document.createElement('div');
+            teacherDiv.className = 'teacher-item';
+            teacherDiv.innerHTML = `
+                <button type="button" class="btn-remove btn-small" onclick="this.parentElement.remove()">Remove</button>
+                <div class="form-group">
+                    <input type="text" placeholder="Teacher Name" class="teacher-name">
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Qualification" class="teacher-qualification">
+                </div>
+                <div class="form-group">
+                    <input type="text" placeholder="Experience" class="teacher-experience">
+                </div>
+            `;
+            container.appendChild(teacherDiv);
+        }
+
+        function addArrayField(type) {
+            const container = document.getElementById(`${type}Container`);
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'array-item';
+            itemDiv.innerHTML = `
+                <input type="text" placeholder="Enter ${type} item" class="${type}-item">
+                <button type="button" class="btn-remove btn-small" onclick="this.parentElement.remove()">Remove</button>
+            `;
+            container.appendChild(itemDiv);
+        }
+
+        function getTeachers() {
+            const teachers = [];
+            document.querySelectorAll('.teacher-item').forEach(item => {
+                const name = item.querySelector('.teacher-name').value;
+                const qualification = item.querySelector('.teacher-qualification').value;
+                const experience = item.querySelector('.teacher-experience').value;
+                if (name) {
+                    teachers.push({ name, qualification, experience });
+                }
+            });
+            return teachers;
+        }
+
+        function getArrayValues(type) {
+            const values = [];
+            document.querySelectorAll(`.${type}-item`).forEach(input => {
+                if (input.value.trim()) {
+                    values.push(input.value.trim());
+                }
+            });
+            return values;
+        }
+
+        function clearDynamicFields() {
+            document.getElementById('teachersContainer').innerHTML = '';
+            document.getElementById('syllabusContainer').innerHTML = '';
+            document.getElementById('prerequisitesContainer').innerHTML = '';
+            document.getElementById('outcomesContainer').innerHTML = '';
+            
+            // Clear uploaded files and previews
+            uploadedThumbnail = '';
+            uploadedVideo = '';
+            document.getElementById('thumbnailPreview').innerHTML = '';
+            document.getElementById('videoPreview').innerHTML = '';
+            document.getElementById('courseThumbnail').value = '';
+            document.getElementById('courseVideo').value = '';
+        }
+    </script>
+</body>
+</html>

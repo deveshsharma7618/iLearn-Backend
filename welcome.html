@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iLearn - Welcome</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            text-align: center;
+            color: white;
+            max-width: 900px;
+        }
+
+        .logo {
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        h1 {
+            font-size: 56px;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .tagline {
+            font-size: 24px;
+            margin-bottom: 50px;
+            opacity: 0.9;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .card {
+            background: white;
+            color: #333;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            display: block;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+        }
+
+        .card-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .card-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .card-description {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .card-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+
+        .card:hover .card-button {
+            transform: scale(1.05);
+        }
+
+        .features {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 50px;
+        }
+
+        .features h2 {
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            text-align: left;
+        }
+
+        .feature-item {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .feature-item strong {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+
+        .footer {
+            margin-top: 50px;
+            opacity: 0.8;
+            font-size: 14px;
+        }
+
+        .footer a {
+            color: white;
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            .tagline {
+                font-size: 18px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #4CAF50;
+            border-radius: 50%;
+            margin-right: 5px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .info-box {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            backdrop-filter: blur(10px);
+        }
+
+        .info-box h3 {
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+
+        .info-box code {
+            background: rgba(0,0,0,0.2);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🎓</div>
+        <h1>Welcome to iLearn</h1>
+        <p class="tagline">Your Gateway to Knowledge and Growth</p>
+
+        <div class="cards">
+            <a href="index.html" class="card">
+                <div class="card-icon">📚</div>
+                <div class="card-title">Browse Courses</div>
+                <div class="card-description">
+                    Explore our comprehensive catalog of courses across multiple categories. 
+                    Find the perfect course to advance your career and skills.
+                </div>
+                <div class="card-button">View Courses →</div>
+            </a>
+
+            <a href="admin.html" class="card">
+                <div class="card-icon">⚙️</div>
+                <div class="card-title">Admin Dashboard</div>
+                <div class="card-description">
+                    Manage courses, view analytics, and oversee your learning platform. 
+                    Create and update courses with ease.
+                </div>
+                <div class="card-button">Admin Panel →</div>
+            </a>
+        </div>
+
+        <div class="features">
+            <h2>✨ Platform Features</h2>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <strong>🔐 Secure Authentication</strong>
+                    JWT-based secure login with role-based access control
+                </div>
+                <div class="feature-item">
+                    <strong>📖 Course Management</strong>
+                    Complete CRUD operations for courses with rich details
+                </div>
+                <div class="feature-item">
+                    <strong>⭐ Reviews & Ratings</strong>
+                    Students can rate and review courses they've taken
+                </div>
+                <div class="feature-item">
+                    <strong>🎯 Advanced Search</strong>
+                    Filter by category, level, and search by keywords
+                </div>
+                <div class="feature-item">
+                    <strong>👥 Instructor Profiles</strong>
+                    Detailed teacher information with qualifications
+                </div>
+                <div class="feature-item">
+                    <strong>📊 Analytics Dashboard</strong>
+                    Real-time statistics and enrollment tracking
+                </div>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3><span class="status-indicator"></span> Server Status</h3>
+            <p id="serverStatus">Checking connection to backend...</p>
+            <p style="margin-top: 10px; font-size: 14px;">
+                Backend API: <code id="apiUrl">http://localhost:5000/api</code>
+            </p>
+        </div>
+
+        <div class="footer">
+            <p>&copy; 2024 iLearn Platform. All rights reserved.</p>
+            <p style="margin-top: 10px;">
+                <a href="README.md" target="_blank">Documentation</a> | 
+                <a href="API_TESTING.md" target="_blank">API Guide</a> | 
+                <a href="WEB_INTERFACE_GUIDE.md" target="_blank">Web Interface Guide</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Check server status
+        const API_BASE_URL = 'http://localhost:5000/api';
+        
+        async function checkServerStatus() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                const data = await response.json();
+                
+                if (response.ok) {
+                    document.getElementById('serverStatus').innerHTML = 
+                        '✅ Backend server is running and healthy!';
+                } else {
+                    document.getElementById('serverStatus').innerHTML = 
+                        '⚠️ Backend server responded but may have issues';
+                }
+            } catch (error) {
+                document.getElementById('serverStatus').innerHTML = 
+                    '❌ Cannot connect to backend server. Please start the server using: <code style="background: rgba(0,0,0,0.2); padding: 2px 8px; border-radius: 4px;">python main.py</code>';
+            }
+        }
+
+        // Check status on page load
+        checkServerStatus();
+
+        // Recheck every 5 seconds
+        setInterval(checkServerStatus, 5000);
+    </script>
+</body>
+</html>

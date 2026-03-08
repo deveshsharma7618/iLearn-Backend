@@ -1,0 +1,3 @@
+Shared resource for all courses.
+
+Replace with your actual resource file if needed.

@@ -1,0 +1,3 @@
+Shared content for all courses.
+
+Update this file with your actual lesson content before running the bulk uploader.
