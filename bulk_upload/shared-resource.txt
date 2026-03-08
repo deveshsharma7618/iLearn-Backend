@@ -1,3 +1,1 @@
-Shared resource for all courses.
-
-Replace with your actual resource file if needed.
+This is sample resource file for upload testing.

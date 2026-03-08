@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iLearn - Upload Course Content & Resources</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 24px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 14px;
+        }
+
+        .content {
+            padding: 24px;
+            display: grid;
+            gap: 20px;
+        }
+
+        .card {
+            border: 1px solid #e7e7e7;
+            border-radius: 12px;
+            padding: 18px;
+            background: #fafafa;
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 14px;
+            color: #333;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            border: 1px solid #dcdcdc;
+            border-radius: 8px;
+            padding: 10px 12px;
+            font-size: 14px;
+            font-family: inherit;
+            background: #fff;
+        }
+
+        textarea {
+            min-height: 90px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15);
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .note {
+            font-size: 13px;
+            color: #666;
+            margin-top: 8px;
+        }
+
+        .result {
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 13px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-word;
+            min-height: 120px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Upload Course Content & Resource</h1>
+            <p>Use admin JWT token to upload content and resources to a course.</p>
+        </div>
+
+        <div class="content">
+            <div class="card">
+                <h2>Common Settings</h2>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="apiBaseUrl">API Base URL</label>
+                        <input id="apiBaseUrl" type="text" value="http://localhost:5000" placeholder="http://localhost:5000">
+                    </div>
+                    <div class="form-group">
+                        <label for="courseId">Course ID</label>
+                        <input id="courseId" type="text" placeholder="Enter course Mongo ObjectId">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="jwtToken">Admin JWT Token</label>
+                    <textarea id="jwtToken" placeholder="Paste access token"></textarea>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>Upload Course Content</h2>
+                <form id="contentUploadForm">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="contentTitle">Content Title</label>
+                            <input id="contentTitle" name="title" type="text" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contentType">Content Type (optional)</label>
+                            <select id="contentType" name="content_type">
+                                <option value="">Auto detect from file</option>
+                                <option value="video">video</option>
+                                <option value="image">image</option>
+                                <option value="document">document</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="contentDescription">Description (optional)</label>
+                        <textarea id="contentDescription" name="description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="contentFile">Select File</label>
+                        <input id="contentFile" name="file" type="file" required>
+                    </div>
+                    <button type="submit" id="contentSubmitBtn">Upload Content</button>
+                </form>
+                <p class="note">Endpoint: POST /api/courses/&lt;course_id&gt;/content/upload</p>
+            </div>
+
+            <div class="card">
+                <h2>Upload Resource</h2>
+                <form id="resourceUploadForm">
+                    <div class="grid-2">
+                        <div class="form-group">
+                            <label for="resourceTitle">Resource Title (optional)</label>
+                            <input id="resourceTitle" name="title" type="text" placeholder="Defaults to filename">
+                        </div>
+                        <div class="form-group">
+                            <label for="resourceContentId">Content ID (optional)</label>
+                            <input id="resourceContentId" name="content_id" type="text" placeholder="Attach to specific content">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="resourceFile">Select Resource File</label>
+                        <input id="resourceFile" name="file" type="file" required>
+                    </div>
+                    <button type="submit" id="resourceSubmitBtn">Upload Resource</button>
+                </form>
+                <p class="note">Endpoint: POST /api/courses/&lt;course_id&gt;/resources/upload</p>
+            </div>
+
+            <div class="card">
+                <h2>Server Response</h2>
+                <pre class="result" id="resultBox">No request sent yet.</pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const resultBox = document.getElementById('resultBox');
+
+        function getCommonValues() {
+            const apiBaseUrl = document.getElementById('apiBaseUrl').value.trim().replace(/\/$/, '');
+            const courseId = document.getElementById('courseId').value.trim();
+            const token = document.getElementById('jwtToken').value.trim();
+
+            if (!apiBaseUrl || !courseId || !token) {
+                throw new Error('API Base URL, Course ID, and Admin JWT Token are required.');
+            }
+
+            return { apiBaseUrl, courseId, token };
+        }
+
+        function showResult(title, data) {
+            resultBox.textContent = `${title}\n\n${typeof data === 'string' ? data : JSON.stringify(data, null, 2)}`;
+        }
+
+        async function uploadToApi({ endpoint, formData, button, successLabel }) {
+            const originalText = button.textContent;
+            button.disabled = true;
+            button.textContent = 'Uploading...';
+
+            try {
+                const { apiBaseUrl, courseId, token } = getCommonValues();
+                const url = `${apiBaseUrl}/api/courses/${courseId}/${endpoint}`;
+
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: formData
+                });
+
+                let payload;
+                try {
+                    payload = await response.json();
+                } catch (err) {
+                    payload = await response.text();
+                }
+
+                if (!response.ok) {
+                    showResult('Upload failed', {
+                        status: response.status,
+                        response: payload
+                    });
+                    return;
+                }
+
+                showResult(successLabel, {
+                    status: response.status,
+                    response: payload
+                });
+            } catch (error) {
+                showResult('Request error', error.message || 'Unknown error');
+            } finally {
+                button.disabled = false;
+                button.textContent = originalText;
+            }
+        }
+
+        document.getElementById('contentUploadForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const fileInput = document.getElementById('contentFile');
+            if (!fileInput.files.length) {
+                showResult('Validation error', 'Please select a content file.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('title', document.getElementById('contentTitle').value.trim());
+            formData.append('description', document.getElementById('contentDescription').value.trim());
+
+            const contentType = document.getElementById('contentType').value;
+            if (contentType) {
+                formData.append('content_type', contentType);
+            }
+
+            formData.append('file', fileInput.files[0]);
+
+            await uploadToApi({
+                endpoint: 'content/upload',
+                formData,
+                button: document.getElementById('contentSubmitBtn'),
+                successLabel: 'Content uploaded successfully'
+            });
+        });
+
+        document.getElementById('resourceUploadForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            const fileInput = document.getElementById('resourceFile');
+            if (!fileInput.files.length) {
+                showResult('Validation error', 'Please select a resource file.');
+                return;
+            }
+
+            const formData = new FormData();
+
+            const title = document.getElementById('resourceTitle').value.trim();
+            const contentId = document.getElementById('resourceContentId').value.trim();
+
+            if (title) {
+                formData.append('title', title);
+            }
+            if (contentId) {
+                formData.append('content_id', contentId);
+            }
+
+            formData.append('file', fileInput.files[0]);
+
+            await uploadToApi({
+                endpoint: 'resources/upload',
+                formData,
+                button: document.getElementById('resourceSubmitBtn'),
+                successLabel: 'Resource uploaded successfully'
+            });
+        });
+    </script>
+</body>
+</html>

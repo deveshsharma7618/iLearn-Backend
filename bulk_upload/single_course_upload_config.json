@@ -1,0 +1,17 @@
+{
+  "api_base_url": "http://localhost:5000",
+  "admin_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTc3MjkzNzM2MywianRpIjoiYzI2NGU5OTMtNDU5Ny00ZGMwLTliMzgtNmM3YzJkNDM5MTE4IiwidHlwZSI6ImFjY2VzcyIsInN1YiI6IjY5YTk4MzdmZWQ3Zjc5MTEzNjA4NWNiYiIsIm5iZiI6MTc3MjkzNzM2MywiY3NyZiI6ImZjMGQwYWY5LTM1NzQtNGFkYy04NjFkLWRhNjFjZmM2ZTEzMSIsImV4cCI6MTc3MzU0MjE2M30.Czsr9IGKoI2mwWCX4M_o2MHcFLmAXmq09WJ6-_X0rdg",
+  "course_id": "69a9837fed7f791136085cbc",
+  "content": {
+    "title": "Sample Course Content",
+    "description": "Sample content uploaded by automation script",
+    "content_type": "",
+    "file_path": "bulk_upload/shared-content.txt"
+  },
+  "resource": {
+    "title": "Sample Resource",
+    "content_id": "",
+    "attach_to_uploaded_content": true,
+    "file_path": "bulk_upload/shared-resource.txt"
+  }
+}

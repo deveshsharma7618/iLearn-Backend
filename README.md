@@ -136,6 +136,28 @@ Use the prepared files in `bulk_upload/` to upload the same content and resource
 
 The script fetches courses using `/api/courses`, uploads content to each course via `/api/courses/<course_id>/content/upload`, and uploads resources via `/api/courses/<course_id>/resources/upload`.
 
+## Upload Content + Resource to One Course
+
+Use the files in `bulk_upload/` to upload one content file and one resource file to a specific course.
+
+### Files
+- `bulk_upload/single_course_upload_config.json` - configuration for one course
+- `bulk_upload/shared-content.txt` - sample content file
+- `bulk_upload/shared-resource.txt` - sample resource file
+- `bulk_upload/upload_course_content_resource.ps1` - automation script
+
+### Run (Windows PowerShell)
+1. Update `bulk_upload/single_course_upload_config.json`:
+  - Set `admin_token`
+  - Set `course_id`
+  - Update file paths/titles if needed
+2. Run:
+  ```powershell
+  powershell -ExecutionPolicy Bypass -File bulk_upload/upload_course_content_resource.ps1
+  ```
+
+The script uploads content first, then uploads resource. If `resource.content_id` is empty and `attach_to_uploaded_content` is `true`, the resource is attached to the newly uploaded content automatically.
+
 ## API Endpoints
 
 ### Authentication

@@ -243,7 +243,7 @@ def upload_profile_photo():
                 except OSError:
                     pass
 
-        profile_photo_url = f"/api/files/images/{unique_filename}"
+        profile_photo_url = f"{request.host_url}/api/files/images/{unique_filename}"
 
         users_collection.update_one(
             {'_id': ObjectId(current_user_id)},
