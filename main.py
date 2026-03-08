@@ -55,14 +55,11 @@ app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB max
 class LazyCollection:
     def __init__(self, collection_name):
         self.collection_name = collection_name
-        self._collection = None
     
     def _get_collection(self):
-        if self._collection is None:
-            if mongo.db is None:
-                raise RuntimeError(f"MongoDB not connected yet")
-            self._collection = getattr(mongo.db, self.collection_name)
-        return self._collection
+        # Get the database from the client
+        db = mongo.cx.ilearn_db
+        return getattr(db, self.collection_name)
     
     def __getattr__(self, name):
         return getattr(self._get_collection(), name)
