@@ -51,10 +51,25 @@ except OSError as e:
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB max
 
-# Database collections
-users_collection = mongo.db.users
-courses_collection = mongo.db.courses
-payments_collection = mongo.db.payments
+# Database collections (lazy initialization to handle connection delays)
+class LazyCollection:
+    def __init__(self, collection_name):
+        self.collection_name = collection_name
+        self._collection = None
+    
+    def _get_collection(self):
+        if self._collection is None:
+            if mongo.db is None:
+                raise RuntimeError(f"MongoDB not connected yet")
+            self._collection = getattr(mongo.db, self.collection_name)
+        return self._collection
+    
+    def __getattr__(self, name):
+        return getattr(self._get_collection(), name)
+
+users_collection = LazyCollection('users')
+courses_collection = LazyCollection('courses')
+payments_collection = LazyCollection('payments')
 
 # Helper function to serialize MongoDB documents
 def serialize_doc(doc):
